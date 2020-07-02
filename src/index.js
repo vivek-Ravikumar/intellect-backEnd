@@ -1,9 +1,18 @@
-var http = require("http");
+const express = require("express");
+const cors = require("cors");
+const transactionRouter = require("./Router/transactionRouter");
+const productRouter = require("./Router/productRouter");
 
-//create a server object:
-http
-  .createServer(function(req, res) {
-    res.write("Hello World!"); //write a response to the client
-    res.end(); //end the response
-  })
-  .listen(8080); //the server object listens on port 8080
+const app = express();
+app.use(cors());
+app.use(express.json({ extended: false }));
+app.use("/api/transaction", transactionRouter);
+app.use("/api/product", productRouter);
+
+app.get("/", (req, res) => {
+  res.send("Hi from the server");
+});
+
+app.listen(3000, () => {
+  console.log("server is up and running");
+});
